@@ -55,7 +55,7 @@ header1 = hdu1.header
 
 
 
-#nchan=header0['OBSNCHAN']
+obsnchan=header0['OBSNCHAN']
 nchan=header1['NCHAN']
 nsblk=header1['NSBLK']
 npol=header1['NPOL']
@@ -69,7 +69,8 @@ chnum=endfreq-startfreq+1
 linenum=endn-startn+1
 freq=hdu0.header['OBSFREQ']
 print 'hehe',hdu0.header['OBSFREQ']
-hdu0.header['OBSFREQ']=((startfreq+endfreq)*1.0/2+1.0)/((nchan-1.0)*1.0/2+1.0)*freq
+#hdu0.header['OBSFREQ']=((startfreq+endfreq)*1.0/2+1.0)/((nchan-1.0)*1.0/2+1.0)*freq
+hdu0.header['OBSFREQ']=freq+((startfreq+endfreq)*1.0/2-(obsnchan-1.0)*1.0/2)*chan_bw
 print 'hehe',hdu0.header['OBSFREQ']
 hdu0.header['OBSBW']=chnum*1.0
 hdu0.header['OBSNCHAN']=chnum
