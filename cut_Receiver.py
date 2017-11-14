@@ -54,7 +54,6 @@ data1 = hdu1.data
 header1 = hdu1.header
 
 
-
 #nchan=header0['OBSNCHAN']
 nchan=header1['NCHAN']
 nsblk=header1['NSBLK']
