@@ -32,7 +32,6 @@ endn=int(sys.argv[4])
 filename=sys.argv[5]
 filename2=sys.argv[6]
 
-
 fileroot=filename[0:-5]
 print fileroot
 fileroot2=filename[0:-5]
