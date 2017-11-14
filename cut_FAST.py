@@ -34,7 +34,6 @@ startn=int(sys.argv[3])
 endn=int(sys.argv[4])
 filename=sys.argv[5]
 
-
 #filename='PM0014_048D1.sf'
 fileroot=filename[0:-5]
 print fileroot
