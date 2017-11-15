@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import numpy as np
 import fitsio
 import sys
@@ -11,7 +12,16 @@ if (len(sys.argv)<4):
   print 'too few input parameters!'
   print 'example:'
   print 'python fitsio_cut_freq_time.py startchan endchan startn endn FAST.fits'
-  sys.exit()
+  startfreq=int(sys.argv[1])
+  endfreq=int(sys.argv[2])
+  startn=0
+  filename=sys.argv[5]
+  fits=fitsio.FITS(filename)
+  header0 = fits[0].read_header()
+  header1 = fits[1].read_header()
+  endn=header1['NAXIS2']
+  #sys.exit()
+
 
 
 startfreq=int(sys.argv[1])
@@ -73,7 +83,7 @@ os.system(command)
 
 
 data2=fits[1][:]
-data3 = np.zeros(nrow,dtype=[('TSUBINT','float64'),('OFFS_SUB','float64'),('LST_SUB','float64'),('RA_SUB','float64'),('DEC_SUB','float64'),('GLON_SUB','float64'),('GLAT_SUB','float64'),('FD_ANG','float32'),('POS_ANG','float32'),('PAR_ANG','float32'),('TEL_AZ','float32'),('TEL_ZEN','float32'),('DAT_FREQ','float32',(nchan)),('DAT_WTS','float32',(nchan)),('DAT_OFFS','float32',(2*nchan)),('DAT_SCL','float32',(2*nchan)),('DATA','uint8',(nsblk,npol,nchan,1))])
+data3 = np.zeros(nrow,dtype=[('TSUBINT','float64'),('OFFS_SUB','float64'),('LST_SUB','float64'),('RA_SUB','float64'),('DEC_SUB','float64'),('GLON_SUB','float64'),('GLAT_SUB','float64'),('FD_ANG','float32'),('POS_ANG','float32'),('PAR_ANG','float32'),('TEL_AZ','float32'),('TEL_ZEN','float32'),('DAT_FREQ','float32',(nchan)),('DAT_WTS','float32',(nchan)),('DAT_OFFS','float32',(npol*nchan)),('DAT_SCL','float32',(npol*nchan)),('DATA','uint8',(nsblk,npol,nchan,1))])
 
 fitsout=fitsio.FITS(outname,'rw')
 
@@ -92,8 +102,6 @@ for index in range(nrow):
     data = fits[1].read(rows=[rowindex], columns=['DATA'])
     print index+startn
     for subindex in range(nsblk):
-	tempspec1=data[0][0][subindex,0,:,0]
-	tempspec2=data[0][0][subindex,1,:,0]
         data3['TSUBINT'][index]=fits[1].read(rows=[rowindex], columns=['TSUBINT'])[0][0]
         data3['OFFS_SUB'][index]=fits[1].read(rows=[rowindex], columns=['OFFS_SUB'])[0][0]
         data3['LST_SUB'][index]=fits[1].read(rows=[rowindex], columns=['LST_SUB'])[0][0]
@@ -109,12 +117,11 @@ for index in range(nrow):
         data3['DAT_FREQ'][index]=fits[1].read(rows=[rowindex], columns=['DAT_FREQ'])[0][0][startfreq:endfreq+1]
         data3['DAT_WTS'][index]=fits[1].read(rows=[rowindex], columns=['DAT_WTS'])[0][0][startfreq:endfreq+1]
         
-        data3['DAT_OFFS'][index][0:nchan]=fits[1].read(rows=[rowindex], columns=['DAT_OFFS'])[0][0][startfreq:endfreq+1]
-        data3['DAT_OFFS'][index][nchan:2*nchan]=fits[1].read(rows=[rowindex], columns=['DAT_OFFS'])[0][0][startfreq+nchan_origin:endfreq+1+nchan_origin]
-        data3['DAT_SCL'][index][0:nchan]=fits[1].read(rows=[rowindex], columns=['DAT_SCL'])[0][0][startfreq:endfreq+1]
-        data3['DAT_SCL'][index][nchan:2*nchan]=fits[1].read(rows=[rowindex], columns=['DAT_SCL'])[0][0][startfreq+nchan_origin:endfreq+1+nchan_origin]
-        data3['DATA'][index][subindex,0,:,0]=tempspec1[startfreq:endfreq+1]
-        data3['DATA'][index][subindex,1,:,0]=tempspec2[startfreq:endfreq+1]
+	for ipol in range(npol):
+            data3['DAT_OFFS'][index][(ipol-1)*nchan:ipol*nchan]=fits[1].read(rows=[rowindex], columns=['DAT_OFFS'])[0][0][startfreq+(ipol-1)*nchan_origin:endfreq+1+(ipol-1)*nchan_origin]
+            data3['DAT_SCL'][index][(ipol-1)*nchan:ipol*nchan]=fits[1].read(rows=[rowindex], columns=['DAT_SCL'])[0][0][startfreq+(ipol-1)*nchan_origin:endfreq+1+(ipol-1)*nchan_origin]
+	    tempspec=data[0][0][subindex,ipol,:,0]
+            data3['DATA'][index][subindex,ipol,:,0]=tempspec[startfreq:endfreq+1]
 
 fitsout.write(data3,header=header0)
 fitsout[0].write_key('HDRVER',hdrver,comment="")
