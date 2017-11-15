@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import numpy as np
 import fitsio
 import sys
@@ -19,7 +20,7 @@ if (len(sys.argv)<4):
   fits=fitsio.FITS(filename)
   header0 = fits[0].read_header()
   header1 = fits[1].read_header()
-  endn=header1['NAXIS2']
+  endn=int(header1['NAXIS2'])-1
   #sys.exit()
 
 
