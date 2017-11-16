@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import numpy as np 
 import pyfits
 import os
@@ -35,7 +37,8 @@ filename=sys.argv[5]
 
 
 #filename='PM0014_048D1.sf'
-fileroot=filename[0:-5]
+fileroot=filename.split('/')[-1]
+fileroot=fileroot[0:-5]
 print fileroot
 
 #u19700101=62135683200.0
