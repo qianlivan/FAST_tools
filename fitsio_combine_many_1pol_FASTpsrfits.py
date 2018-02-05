@@ -188,7 +188,7 @@ for line in open(keyfile):
        fitsout[1].write_key('INT_TYPE','TIME',comment="Time axis (TIME, BINPHSPERI, BINLNGASC, etc)")
        fitsout[1].write_key('INT_UNIT','SEC',comment="Unit of time axis (SEC, PHS (0-1),DEG)")
        fitsout[1].write_key('SCALE','FluxDen',comment="")
-       fitsout[1].write_key('NPOL',1,comment="Nr of polarisations")
+       fitsout[1].write_key('NPOL',npol,comment="Nr of polarisations")
        fitsout[1].write_key('POL_TYPE',pol_type,comment="Polarisation identifier")
        fitsout[1].write_key('TBIN',tbin,comment="[s] Time per bin or sample")
        fitsout[1].write_key('NBIN',1,comment="")
