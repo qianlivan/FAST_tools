@@ -53,7 +53,6 @@ def ectolocal(ra,dec,mjd):
     y= float(body.alt)*180/np.pi  # convert radian to degree
     return x,y
 
-
 ra0=ephem.hours(sys.argv[1])
 dec0=ephem.degrees(sys.argv[2])
 mjd=float(sys.argv[3])
