@@ -3,12 +3,15 @@ import numpy as np
 import time
 import sys
 
+# provide equitorial coordiante (ra,dec) and modified Julian date,
+# give azimuth and elevation (az,el)
+
 if (len(sys.argv)<3):
   print 'too few input parameters, format:'
-  print 'python radec2azel.py ra    dec'
-  print '                     (hours) (degrees)'
+  print 'python radecmjd2azel.py ra    dec mjd'
+  print '                     (hours) (degrees)  '
   print 'example:'
-  print 'python radec2azel.py 20:00:00 20:00:00'
+  print 'python radecmjd2azel.py 20:00:00 20:00:00 58000'
   sys.exit()
 
 
@@ -53,7 +56,7 @@ def ectolocal(ra,dec,mjd):
 
 ra0=ephem.hours(sys.argv[1])
 dec0=ephem.degrees(sys.argv[2])
-mjd=ephem.degrees(sys.argv[3])
+mjd=float(sys.argv[3])
 az,el=ectolocal(ra0,dec0,mjd)
 print 'Az                El'
 print az,el                       # output azimuthal and elevation
