@@ -3,11 +3,15 @@ import numpy as np
 import time
 import sys
 
+
+# provide azimuth and elevation (az,el) and modified Julian date,
+# give equitorial coordiante (ra,dec)
+
 if (len(sys.argv)<4):
   print 'too few input parameters, format:'
-  print 'python azel2radec.py az el delta_T(seconds)'
+  print 'python azel2radec.py az el mjd'
   print 'example:'
-  print 'python azel2radec.py 20.0 20.0 10'
+  print 'python azel2radec.py 20.0 20.0 58000'
   #sys.exit()
   print 'default values used'
   az0=ephem.degrees(20.0)
