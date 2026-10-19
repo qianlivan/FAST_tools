@@ -3,11 +3,23 @@ import numpy as np
 import time
 import sys
 
+
+# (x,y,z) is the coordinate in the FAST coordinate system,
+# (0,0,0) is at the origin of the shpere of the reflector.
+# You need (x,y,z) and the time (here is MJD) to convert to (ra, dec).
+# Note that MJD is UTC.
+# The start point of MJD is 1858-11-17 00:00:00 UT.
+# MJD = JD - 2,400,000.5
+# The star point of JD is BCE 4713-1-1 12:00:00 UT.
+#
+
+# The input date should be in Beijing Time.
+
 if (len(sys.argv)<5):
   print('too few input parameters, format:')
-  print('python xyz2radec.py x y z')
+  print('python xyzdatebjt2radec.py x y z datebjt')
   print('example:')
-  print('python xyz2radec.py 80.0 90.0 -155.0 58000')
+  print('python xyzdatebjt2radec.py 80.0 90.0 -155.0 "2026/05/29 12:00:00"')
   #sys.exit()
   x0 = 80.0
   y0 = 90.0
